@@ -279,18 +279,6 @@ class ShareMarket:
 
     def myPortfolioMenu(self):
 
-        # try:
-        #     pass
-        # except:
-        #
-        #     pass
-
-        # print("No stocks bought")
-        #
-        # time.sleep(2)
-        #
-        # self.startMenu()
-
         chosenOption = int(input("Welcome to your Portfolio, choose an option: 1. Check Your Total Value 2. View Stocks Bought \n"))
 
         if chosenOption is 1:
