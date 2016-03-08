@@ -18,6 +18,7 @@ class Account:
         openFile.write(str(self.balance))
 
 
+
 class TSX:
     def __init__(self, account):
         self.account = account
@@ -212,6 +213,12 @@ class ShareMarket:
             time.sleep(2)
             self.startMenu()
 
+    def save(self):
+
+        pass
+
+
+
 
 
     def getPrice(self, chosenStock):
@@ -232,6 +239,7 @@ class ShareMarket:
 
     def buyStock(self):
 
+        global stocksBought
 
 
         chosenStock = str(input("Please input the ID the stock you wish to purchase: "))
@@ -258,9 +266,11 @@ class ShareMarket:
 
         print("Your balance is now: ", self.account.balance)
 
-        time.sleep(2)
+
 
         self.stocksBought.save()
+
+        time.sleep(2)
 
         self.startMenu()
 
@@ -324,32 +334,10 @@ class ShareMarket:
 
         pass
 
-    def save(self, stocksBought):
-
-        try:
-            with open('stocksBought.txt', 'wb') as f:
-                pickle.dump(self.stocksBought, f)
-        except NameError:
-            print("No Stocks Bought, Lad")
-
-            time.sleep(2)
-
-            self.startMenu()
-
-
-
 
     def quit(self):
 
         self.account.save()
-
-        self.stocksBought.save()
-
-        try:
-            with open('stocksBought.txt', 'wb') as f:
-                pickle.dump(self.stocksBought, f)
-        except NameError:
-            pass
 
         quit()
 
@@ -357,9 +345,6 @@ class ShareMarket:
 
 accountFileName = 'account.txt'
 account = Account(accountFileName)
+
 tsx = TSX(account)
 tsx.start()
-
-stocks = ShareMarket()
-
-stocks.save()
