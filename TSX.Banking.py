@@ -256,15 +256,13 @@ class ShareMarket:
 
         self.stocksBought.append(chosenStock)
 
-        print(self.stocksBought)
-
         time.sleep(2)
 
         self.account.balance = self.account.balance - finalPrice
 
         print("Your balance is now: ", self.account.balance)
 
-        self.save(stocksBought)
+        # self.save(self.stocksBought)
 
         time.sleep(2)
 
@@ -281,17 +279,17 @@ class ShareMarket:
 
     def myPortfolioMenu(self):
 
-        try:
-            pass
-        except:
+        # try:
+        #     pass
+        # except:
+        #
+        #     pass
 
-            pass
-
-            print("No stocks bought")
-
-            time.sleep(2)
-
-            self.startMenu()
+        # print("No stocks bought")
+        #
+        # time.sleep(2)
+        #
+        # self.startMenu()
 
         chosenOption = int(input("Welcome to your Portfolio, choose an option: 1. Check Your Total Value 2. View Stocks Bought \n"))
 
