@@ -2,7 +2,10 @@ import time
 from googlefinance import getQuotes
 import json
 
+
+
 class Account:
+
     balance = 50000
 
     def __init__(self, filename):
@@ -251,7 +254,9 @@ class ShareMarket:
 
         print("Your final price is: ", finalPrice, "\n")
 
-        self.stocksBought = [str(chosenStock) for chosenStock in self.stocksBought]
+        self.stocksBought.append(chosenStock)
+
+        print(self.stocksBought)
 
         time.sleep(2)
 
@@ -321,8 +326,8 @@ class ShareMarket:
 
     def save(self, stocksBought):
 
-        with open('stocksBought.txt', 'w') as outfile:
-            json.dump(stocksBought, outfile)
+        with open('stocksBought.txt', 'w', encoding='utf-8') as outfile:
+            json.dumps(stocksBought, outfile)
 
 
 
