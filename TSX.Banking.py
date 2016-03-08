@@ -1,6 +1,6 @@
 import time
 from googlefinance import getQuotes
-import pickle
+import json
 
 class Account:
     balance = 50000
@@ -213,12 +213,6 @@ class ShareMarket:
             time.sleep(2)
             self.startMenu()
 
-    def save(self):
-
-        pass
-
-
-
 
 
     def getPrice(self, chosenStock):
@@ -241,7 +235,6 @@ class ShareMarket:
 
         global stocksBought
 
-
         chosenStock = str(input("Please input the ID the stock you wish to purchase: "))
 
         print("The value of the stock is: \n", self.getPrice(chosenStock))
@@ -258,7 +251,7 @@ class ShareMarket:
 
         print("Your final price is: ", finalPrice, "\n")
 
-        self.stocksBought = [str(x) for x in self.stocksBought]
+        self.stocksBought = [str(chosenStock) for chosenStock in self.stocksBought]
 
         time.sleep(2)
 
@@ -266,9 +259,7 @@ class ShareMarket:
 
         print("Your balance is now: ", self.account.balance)
 
-
-
-        self.stocksBought.save()
+        self.save(stocksBought)
 
         time.sleep(2)
 
@@ -286,9 +277,11 @@ class ShareMarket:
     def myPortfolioMenu(self):
 
         try:
-            with open('stocksBought.txt', 'rb') as f:
-                self.stocksBought = pickle.load(f)
-        except EOFError:
+            pass
+        except:
+
+            pass
+
             print("No stocks bought")
 
             time.sleep(2)
@@ -300,8 +293,6 @@ class ShareMarket:
         if chosenOption is 1:
             self.checkTotalValue()
         if chosenOption is 2:
-
-
 
             try:
                 print("The stocks you have bought are: ", self.stocksBought)
@@ -327,6 +318,11 @@ class ShareMarket:
             print("Not a valid option, please select one: ")
             chosenOption = int(input())
 
+
+    def save(self, stocksBought):
+
+        with open('stocksBought.txt', 'w') as outfile:
+            json.dump(stocksBought, outfile)
 
 
 
