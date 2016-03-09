@@ -190,11 +190,25 @@ class ShareMarket:
     def __init__(self, account):
         self.account = account
 
+        """
+        Opens stocksBought.txt and returns the value for the variable stocksBought
+
+        :return: The Stocks you have bought
+        """
+
+        with open('stocksBought.txt', 'r') as outfile:
+            stocksBoughtFile = json.load(outfile)
+
+            self.stocksBought = stocksBoughtFile
+
     def startMenu(self):
 
         print("Welcome to the TSX Investor page\n\n")
 
-        menuItem = int(input("Please select an option from the menu: 1. Buy 2. Sell 3. Check a Stock 4. My Portfolio 5. Quit\n"))
+        menuItem = int(input("Please select an option from the menu: 0. Test 1. Buy 2. Sell 3. Check a Stock 4. My Portfolio 5. Quit\n"))
+
+        if menuItem is 0:
+            self.test(self.stocksBought)
 
         if menuItem is 1:
             self.buyStock()
@@ -237,6 +251,8 @@ class ShareMarket:
 
     def buyStock(self):
 
+        self.openFile()
+
         global stocksBought
 
         chosenStock = str(input("Please input the ID the stock you wish to purchase: "))
@@ -269,7 +285,7 @@ class ShareMarket:
 
         print("Your balance is now: ", self.account.balance)
 
-        # self.save(self.stocksBought)
+        self.save(self.stocksBought)
 
         time.sleep(2)
 
@@ -291,37 +307,27 @@ class ShareMarket:
         if chosenOption is 1:
             self.checkTotalValue()
         if chosenOption is 2:
-
-            try:
-                print("The stocks you have bought are: ", self.stocksBought)
-
-                time.sleep(2)
-
-                self.startMenu()
-            except NameError:
-                print(' '.join(map(str, self.stocksBought)))
-
-                time.sleep(2)
-
-                self.startMenu()
-
-            finally:
-                print("You Have Bought No Stocks")
-
-                time.sleep(2)
-
-                self.startMenu()
-
+            print(self.stocksBought)
         else:
             print("Not a valid option, please select one: ")
             chosenOption = int(input())
 
+    def openFile(self):
+
+        pass
+
 
     def save(self, stocksBought):
 
-        with open('stocksBought.txt', 'w', encoding='utf-8') as outfile:
-            json.dumps(stocksBought, outfile)
+        x = self.stocksBought
 
+        with open('stocksBought.txt', 'w') as outfile:
+            json.dump([stocksBought], outfile, indent=2)
+
+
+    def test(self, stocksBought):
+
+        print(self.stocksBought)
 
 
     def checkTotalValue(self):
@@ -335,10 +341,14 @@ class ShareMarket:
 
         quit()
 
-# start banking app
 
+#Open File and read the account balance. Nothing should happen
 accountFileName = 'account.txt'
 account = Account(accountFileName)
 
+#Start the actual banking app. Something should happen
 tsx = TSX(account)
 tsx.start()
+
+
+
