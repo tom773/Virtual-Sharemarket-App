@@ -225,6 +225,7 @@ class ShareMarket:
         :param chosenStock: stock symbol
         :return: float value of last trade price
         """
+
         allInfo = getQuotes(chosenStock)
 
         theStock = allInfo[0]
@@ -240,6 +241,11 @@ class ShareMarket:
 
         chosenStock = str(input("Please input the ID the stock you wish to purchase: "))
 
+        while chosenStock in self.stocksBought:
+            print("Stock Already Purchased")
+            time.sleep(1)
+            self.buyStock()
+
         print("The value of the stock is: \n", self.getPrice(chosenStock))
 
         amount = float(input("Please enter the amount of shares you wish to purchase: "))
@@ -253,6 +259,7 @@ class ShareMarket:
             amount = float(input("Please enter the amount of shares you wish to purchase: "))
 
         print("Your final price is: ", finalPrice, "\n")
+
 
         self.stocksBought.append(chosenStock)
 
