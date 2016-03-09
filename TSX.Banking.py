@@ -187,6 +187,8 @@ class ShareMarket:
 
     stocksBought = list()
 
+    totalPortfolioValue = 0
+
     def __init__(self, account):
         self.account = account
 
@@ -195,6 +197,14 @@ class ShareMarket:
 
         :return: The Stocks you have bought
         """
+
+
+        with open('totalPortfolioValue.txt', 'r') as stockFile:
+
+            stockFile = json.load(stockFile)
+
+        self.totalPortfolioValue = stockFile
+
 
         with open('stocksBought.txt', 'r') as outfile:
             stocksBoughtFile = json.load(outfile)
@@ -208,7 +218,7 @@ class ShareMarket:
         menuItem = int(input("Please select an option from the menu: 0. Test 1. Buy 2. Sell 3. Check a Stock 4. My Portfolio 5. Quit\n"))
 
         if menuItem is 0:
-            self.test(self.stocksBought)
+            self.test(self.totalPortfolioValue)
 
         if menuItem is 1:
             self.buyStock()
@@ -249,11 +259,15 @@ class ShareMarket:
         return float(price)
 
 
+    def test(self, totalPortfolioValue):
+
+        print(totalPortfolioValue)
+
     def buyStock(self):
 
-        self.openFile()
-
         global stocksBought
+
+        global totalPortfolioValue
 
         chosenStock = str(input("Please input the ID the stock you wish to purchase: "))
 
@@ -266,23 +280,22 @@ class ShareMarket:
 
         amount = float(input("Please enter the amount of shares you wish to purchase: "))
 
+
         finalPrice = self.getPrice(chosenStock) * amount
 
         while finalPrice > self.account.balance:
 
-            print("Not enough funds try again:\n")
-
-            amount = float(input("Please enter the amount of shares you wish to purchase: "))
+            amount = int(input("Not Enough Funds try again: "))
 
         print("Your final price is: ", finalPrice, "\n")
 
-
         self.stocksBought.append(chosenStock)
 
-        time.sleep(2)
+        self.totalPortfolioValue = self.totalPortfolioValue + finalPrice
 
         self.account.balance = self.account.balance - finalPrice
 
+        time.sleep(2)
         print("Your balance is now: ", self.account.balance)
 
         self.save(self.stocksBought)
@@ -310,36 +323,29 @@ class ShareMarket:
             print("The stocks you have bought are: ", self.stocksBought)
             time.sleep(2)
             self.startMenu()
-        else:
-            print("Not a valid option, please select one: ")
-            chosenOption = int(input())
-
-    def openFile(self):
-
-        pass
-
 
     def save(self, stocksBought):
 
-        x = self.stocksBought
+        with open('totalPortfolioValue.txt', 'w') as stockFile:
+
+            json.dump(self.totalPortfolioValue, stockFile)
+
+        # openFile = open('totalPortfolioValue.txt', "w")
+        #
+        # float(openFile.write(self.totalPortfolioValue))
 
         with open('stocksBought.txt', 'w') as outfile:
             json.dump(stocksBought, outfile, indent=2)
 
-
-    def test(self, stocksBought):
-
-        print(self.stocksBought)
-
-
     def checkTotalValue(self):
 
-        pass
+        print(self.totalPortfolioValue)
 
 
     def quit(self):
 
         self.account.save()
+        self.save(self.stocksBought)
 
         quit()
 
