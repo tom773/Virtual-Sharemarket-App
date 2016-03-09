@@ -307,7 +307,9 @@ class ShareMarket:
         if chosenOption is 1:
             self.checkTotalValue()
         if chosenOption is 2:
-            print(self.stocksBought)
+            print("The stocks you have bought are: ", self.stocksBought)
+            time.sleep(2)
+            self.startMenu()
         else:
             print("Not a valid option, please select one: ")
             chosenOption = int(input())
@@ -322,7 +324,7 @@ class ShareMarket:
         x = self.stocksBought
 
         with open('stocksBought.txt', 'w') as outfile:
-            json.dump([stocksBought], outfile, indent=2)
+            json.dump(stocksBought, outfile, indent=2)
 
 
     def test(self, stocksBought):
