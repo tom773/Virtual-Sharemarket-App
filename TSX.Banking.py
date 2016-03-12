@@ -1,14 +1,12 @@
- #!/usr/bin/python
- # -*- coding: utf-8 -*-
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import time
 from googlefinance import getQuotes
 import json
 
 
-
 class Account:
-
     balance = 50000
 
     def __init__(self, filename):
@@ -24,39 +22,39 @@ class Account:
         openFile.write(str(self.balance))
 
 
-
 class TSX:
     def __init__(self, account):
         self.account = account
 
     def start(self):
-            chosenService = int(input("Select service: 1. Banking 2. ShareMarket: "))
-            if chosenService is 1:
-                banking = Banking(self.account)
-                banking.getAge()
-            elif chosenService is 2:
-                shareMarket = ShareMarket(self.account)
-                shareMarket.startMenu()
+        chosenService = int(
+            input("Select service: 1. Banking 2. ShareMarket: ")
+        )
+        if chosenService is 1:
+            banking = Banking(self.account)
+            banking.getAge()
+        elif chosenService is 2:
+            shareMarket = ShareMarket(self.account)
+            shareMarket.startMenu()
 
 
 class Banking:
     def __init__(self, account):
-
         self.account = account
 
     def getAge(self):
-
         Age = int(input("Hello, Please enter your current legal age \n"))
-
         if Age < 18:
-            print("You are too young to use our rektBanking service")
+            print("You are too young to use our banking service")
             self.quit()
         else:
-            print("Welcome to rektBanking")
+            print("Welcome to TSX Banking")
             self.menu()
 
     def menu(self):
-        print("Please select an option from the menu: \n" "1. Balance 2. Make a Payment 3. Currency Converter 4. Deposit 5. Withdraw 6. Quit")
+        print("Please select an option from the menu:\n" +
+              "1. Balance 2. Make a Payment 3. Currency Converter " +
+              "4. Deposit 5. Withdraw 6. Quit")
         number = int(input())
 
         if number is 1:
@@ -87,61 +85,41 @@ class Banking:
 
     def printBalance(self):
         print("Your Balance is: $", self.account.balance)
-
         time.sleep(2)
 
         self.menu()
 
-
-
     def makePayment(self):
-
         print("To whom would you like to receive the payment?")
-
         person = input()
-
         print("You selected " + person + ", Please specify how much to send: ")
-
         amount = int(input())
 
         while amount > self.account.balance:
-
             print("Not enough funds, Try Again\n")
-
             amount = int(input())
 
         print("You have sent", amount, " dollars to " + person + "\n")
-
         self.account.balance = self.account.balance - amount
-
         self.printBalance()
 
     def deposit(self):
-
-        print("How much would you like to deposit without Commas or Dollar Sign")
-
+        print("How much would you like to deposit (no commas or dollar " +
+              "signs)?")
         amount = int(input())
-
         self.account.balance = self.account.balance + amount
-
         self.printBalance()
 
     def withdraw(self):
-
-        print("How much would you like to withdraw without Commas or a Dollar sign")
-
+        print("How much would you like to withdraw (no commas or dollar " +
+              "signs)?")
         amount = int(input())
-
         while amount > self.account.balance:
             print("Not enough funds try again\n")
             time.sleep(2)
-
             amount = int(input())
 
-
-
         self.account.balance = self.account.balance - amount
-
         self.printBalance()
 
     def gbp(self, value):
@@ -150,23 +128,21 @@ class Banking:
         finalGbp = value * rate
         print("£", finalGbp)
 
-    def Euro(self,value):
+    def euro(self, value):
         rate = 0.89
 
         finalEuro = value * rate
         print("€", finalEuro)
 
-    def Aud(self, value):
+    def aud(self, value):
         rate = 1.41
 
         finalAud = value * rate
         print("$", finalAud)
 
-
-
     def currencyConverter(self):
-        currency = int(input("Please Select a currency 1. GBP 2. Euro or 3. Aud \n"))
-
+        currency = int(input("Please Select a currency 1. GBP 2. Euro or " +
+                             "3. Aud \n"))
         value = int(input("Enter amount in USD to convert from\n "))
 
         if currency is 1:
@@ -174,11 +150,11 @@ class Banking:
             time.sleep(2)
             self.menu()
         if currency is 2:
-            self.Euro(value)
+            self.euro(value)
             time.sleep(2)
             self.menu()
         if currency is 3:
-            self.Aud(value)
+            self.aud(value)
             time.sleep(2)
             self.menu()
 
@@ -186,39 +162,35 @@ class Banking:
         self.account.save()
         quit()
 
+
 class ShareMarket:
-
     stocksBought = list()
-
     totalPortfolioValue = 0
 
     def __init__(self, account):
         self.account = account
-
         """
-        Opens stocksBought.txt and returns the value for the variable stocksBought
+        Opens stocksBought.txt and returns the value for stocksBought
 
         :return: The Stocks you have bought
         """
 
-
         with open('totalPortfolioValue.txt', 'r') as stockFile:
-
             stockFile = json.load(stockFile)
-
         self.totalPortfolioValue = stockFile
-
 
         with open('stocksBought.txt', 'r') as outfile:
             stocksBoughtFile = json.load(outfile)
-
             self.stocksBought = stocksBoughtFile
 
     def startMenu(self):
 
         print("Welcome to the TSX Investor page\n\n")
-
-        menuItem = int(input("Please select an option from the menu: 0. Test 1. Buy 2. Sell 3. Check a Stock 4. My Portfolio 5. Quit\n"))
+        menuItem = int(
+            input("Please select an option from the menu: " +
+                  "0. Test 1. Buy 2. Sell 3. Check a Stock 4. My Portfolio " +
+                  "5. Quit\n")
+        )
 
         if menuItem is 0:
             self.test(self.totalPortfolioValue)
@@ -243,8 +215,6 @@ class ShareMarket:
             time.sleep(2)
             self.startMenu()
 
-
-
     def getPrice(self, chosenStock):
         """
         Retrieves the last trade price of a stock.
@@ -254,25 +224,21 @@ class ShareMarket:
         """
 
         allInfo = getQuotes(chosenStock)
-
         theStock = allInfo[0]
-
         price = theStock["LastTradePrice"]
-
         return float(price)
 
-
     def test(self, totalPortfolioValue):
-
         print(totalPortfolioValue)
 
     def buyStock(self):
-
         global stocksBought
-
         global totalPortfolioValue
 
-        chosenStock = str(input("Please input the ID the stock you wish to purchase: "))
+        chosenStock = str(
+            input("Please input the ID the stock you wish to " +
+                  "purchase: ")
+        )
 
         while chosenStock in self.stocksBought:
             print("Stock Already Purchased")
@@ -281,21 +247,20 @@ class ShareMarket:
 
         print("The value of the stock is: \n", self.getPrice(chosenStock))
 
-        amount = float(input("Please enter the amount of shares you wish to purchase: "))
-
+        amount = float(
+            input("Please enter the amount of shares you wish to " +
+                  "purchase: ")
+        )
 
         finalPrice = self.getPrice(chosenStock) * amount
 
         while finalPrice > self.account.balance:
-
             amount = int(input("Not Enough Funds try again: "))
 
         print("Your final price is: ", finalPrice, "\n")
 
         self.stocksBought.append(chosenStock)
-
         self.totalPortfolioValue = self.totalPortfolioValue + finalPrice
-
         self.account.balance = self.account.balance - finalPrice
 
         time.sleep(2)
@@ -317,8 +282,10 @@ class ShareMarket:
         self.startMenu()
 
     def myPortfolioMenu(self):
-
-        chosenOption = int(input("Welcome to your Portfolio, choose an option: 1. Check Your Total Value 2. View Stocks Bought \n"))
+        chosenOption = int(
+            input("Welcome to your Portfolio, choose an option: " +
+                  "1. Check Your Total Value 2. View Stocks Bought \n")
+        )
 
         if chosenOption is 1:
             self.checkTotalValue()
@@ -328,9 +295,7 @@ class ShareMarket:
             self.startMenu()
 
     def save(self, stocksBought):
-
         with open('totalPortfolioValue.txt', 'w') as stockFile:
-
             json.dump(self.totalPortfolioValue, stockFile)
 
         # openFile = open('totalPortfolioValue.txt', "w")
@@ -341,25 +306,18 @@ class ShareMarket:
             json.dump(stocksBought, outfile, indent=2)
 
     def checkTotalValue(self):
-
         print(self.totalPortfolioValue)
 
-
     def quit(self):
-
         self.account.save()
         self.save(self.stocksBought)
 
         quit()
 
-
-#Open File and read the account balance. Nothing should happen
+# Open File and read the account balance. Nothing should happen
 accountFileName = 'account.txt'
 account = Account(accountFileName)
 
-#Start the actual banking app. Something should happen
+# Start the actual banking app. Something should happen
 tsx = TSX(account)
 tsx.start()
-
-
-
