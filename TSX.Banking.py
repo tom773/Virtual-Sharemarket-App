@@ -1,3 +1,6 @@
+ #!/usr/bin/python
+ # -*- coding: utf-8 -*-
+
 import time
 from googlefinance import getQuotes
 import json
@@ -13,7 +16,7 @@ class Account:
         try:
             openFile = open(self.filename, "r")
             self.balance = float(openFile.read())
-        except FileNotFoundError:
+        except IOError:
             pass
 
     def save(self):
