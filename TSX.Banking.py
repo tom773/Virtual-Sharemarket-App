@@ -260,13 +260,22 @@ class ShareMarket:
         print("Your final price is: ", finalPrice, "\n")
 
         self.stocksBought.append(chosenStock)
-        self.totalPortfolioValue = self.totalPortfolioValue + finalPrice
+
+
+
+        #self.totalPortfolioValue = self.totalPortfolioValue + finalPrice
+
         self.account.balance = self.account.balance - finalPrice
 
         time.sleep(2)
+
         print("Your balance is now: ", self.account.balance)
 
         self.save(self.stocksBought)
+
+        time.sleep(2)
+
+        self.updatePrices(amount, chosenStock)
 
         time.sleep(2)
 
@@ -274,6 +283,19 @@ class ShareMarket:
 
     def sellStock(self):
         pass
+
+    def updatePrices(self, amount, chosenStock):
+
+        portfolio = {}
+
+        currentPrices = {}
+
+        portfolio.update({chosenStock: amount})
+
+        print(portfolio)
+
+        time.sleep(2)
+
 
     def checkStock(self):
         chosenStock = str(input("Enter Stock Name: "))
