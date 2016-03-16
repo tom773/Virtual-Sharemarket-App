@@ -275,10 +275,6 @@ class ShareMarket:
 
         time.sleep(2)
 
-        self.updatePrices(amount, chosenStock)
-
-        time.sleep(2)
-
         self.startMenu()
 
     def sellStock(self):
@@ -287,14 +283,6 @@ class ShareMarket:
     def updatePrices(self, amount, chosenStock):
 
         portfolio = {}
-
-        currentPrices = {}
-
-        portfolio.update({chosenStock: amount})
-
-        print(portfolio)
-
-        time.sleep(2)
 
 
     def checkStock(self):
@@ -327,8 +315,24 @@ class ShareMarket:
         with open('stocksBought.txt', 'w') as outfile:
             json.dump(stocksBought, outfile, indent=2)
 
+    def definePrice(self):
+
+        prices = {}
+
+        for stock in self.stocksBought:
+
+            prices[stock] = self.getPrice(chosenStock=stock)
+
+        return prices
+
+
     def checkTotalValue(self):
-        print(self.totalPortfolioValue)
+
+        print(self.definePrice())
+
+        time.sleep(2)
+
+        self.startMenu()
 
     def quit(self):
         self.account.save()
