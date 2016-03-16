@@ -271,6 +271,8 @@ class ShareMarket:
 
         print("Your balance is now: ", self.account.balance)
 
+        print('Your portfolo looks like: ', self.updatePrices(amount, chosenStock))
+
         self.save(self.stocksBought)
 
         time.sleep(2)
@@ -283,6 +285,10 @@ class ShareMarket:
     def updatePrices(self, amount, chosenStock):
 
         portfolio = {}
+
+        portfolio[chosenStock] = amount
+
+        return portfolio
 
 
     def checkStock(self):
