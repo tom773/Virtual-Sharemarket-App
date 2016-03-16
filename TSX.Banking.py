@@ -175,6 +175,8 @@ class ShareMarket:
         :return: The Stocks you have bought
         """
 
+        self.definePrice()
+
         with open('totalPortfolioValue.txt', 'r') as stockFile:
             stockFile = json.load(stockFile)
         self.totalPortfolioValue = stockFile
@@ -271,7 +273,7 @@ class ShareMarket:
 
         print("Your balance is now: ", self.account.balance)
 
-        print('Your portfolo looks like: ', self.updatePrices(amount, chosenStock))
+        # print('Your portfolo looks like: ', self.updatePrices(amount, chosenStock))
 
         self.save(self.stocksBought)
 
@@ -282,7 +284,7 @@ class ShareMarket:
     def sellStock(self):
         pass
 
-    def updatePrices(self, amount, chosenStock):
+    def updatePort(self, amount, chosenStock):
 
         portfolio = {}
 
@@ -322,7 +324,10 @@ class ShareMarket:
             json.dump(stocksBought, outfile, indent=2)
 
     def definePrice(self):
-
+        """
+        :param: stocksBought
+        :return: prices dictionary
+        """
         prices = {}
 
         for stock in self.stocksBought:
