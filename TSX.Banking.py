@@ -263,23 +263,20 @@ class ShareMarket:
 
         self.stocksBought.append(chosenStock)
 
-
-
-        #self.totalPortfolioValue = self.totalPortfolioValue + finalPrice
-
         self.account.balance = self.account.balance - finalPrice
 
         time.sleep(2)
 
         print("Your balance is now: ", self.account.balance)
 
-        # print('Your portfolo looks like: ', self.updatePrices(amount, chosenStock))
-
         self.save(self.stocksBought)
+
+        print('Your portfolio looks like: ', self.updatePort(amount, chosenStock))
 
         time.sleep(2)
 
         self.startMenu()
+
 
     def sellStock(self):
         pass
