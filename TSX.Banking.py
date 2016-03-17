@@ -280,18 +280,20 @@ class ShareMarket:
 
         self.portfolio[chosenStock] = amount
 
-        print('Your portfolio looks like: ', self.portfolio)
+        print('Your portfolio looks like: ', '\n', self.portfolio)
 
         time.sleep(2)
 
         self.startMenu()
 
-
-    def sellStock(self):
+    def portValue(self):
 
         pass
 
 
+    def sellStock(self):
+
+        pass
 
     def checkStock(self):
         chosenStock = str(input("Enter Stock Name: "))
