@@ -166,8 +166,10 @@ class Banking:
 class ShareMarket:
     stocksBought = list()
     totalPortfolioValue = 0
+    portfolio = {}
 
     def __init__(self, account):
+
         self.account = account
         """
         Opens stocksBought.txt and returns the value for stocksBought
@@ -177,9 +179,13 @@ class ShareMarket:
 
         self.definePrice()
 
+        with open('portfolio.txt', 'r') as portfile:
+            portfile = portfile.read()
+            self.portfolio = eval(portfile)
+
         with open('totalPortfolioValue.txt', 'r') as stockFile:
             stockFile = json.load(stockFile)
-        self.totalPortfolioValue = stockFile
+            self.totalPortfolioValue = stockFile
 
         with open('stocksBought.txt', 'r') as outfile:
             stocksBoughtFile = json.load(outfile)
@@ -236,6 +242,7 @@ class ShareMarket:
     def buyStock(self):
         global stocksBought
         global totalPortfolioValue
+        global portfolio
 
         chosenStock = str(
             input("Please input the ID the stock you wish to " +
@@ -271,7 +278,9 @@ class ShareMarket:
 
         self.save(self.stocksBought)
 
-        print('Your portfolio looks like: ', self.updatePort(amount, chosenStock))
+        self.portfolio[chosenStock] = amount
+
+        print('Your portfolio looks like: ', self.portfolio)
 
         time.sleep(2)
 
@@ -279,15 +288,9 @@ class ShareMarket:
 
 
     def sellStock(self):
+
         pass
 
-    def updatePort(self, amount, chosenStock):
-
-        portfolio = {}
-
-        portfolio[chosenStock] = amount
-
-        return portfolio
 
 
     def checkStock(self):
@@ -313,12 +316,11 @@ class ShareMarket:
         with open('totalPortfolioValue.txt', 'w') as stockFile:
             json.dump(self.totalPortfolioValue, stockFile)
 
-        # openFile = open('totalPortfolioValue.txt', "w")
-        #
-        # float(openFile.write(self.totalPortfolioValue))
-
         with open('stocksBought.txt', 'w') as outfile:
             json.dump(stocksBought, outfile, indent=2)
+
+        with open('portfolio.txt', 'w') as portfile:
+            portfile.write(str(self.portfolio))
 
     def definePrice(self):
         """
