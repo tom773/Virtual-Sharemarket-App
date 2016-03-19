@@ -340,7 +340,13 @@ class ShareMarket:
 
     def checkTotalValue(self):
 
-        print(self.definePrice())
+        prices = self.definePrice()
+
+        for stock in self.portfolio:
+
+            self.totalPortfolioVlaue = self.portfolio[str(stock)] * prices[str(stock)]
+
+        print(self.totalPortfolioValue)
 
         time.sleep(2)
 
