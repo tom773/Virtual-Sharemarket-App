@@ -276,9 +276,11 @@ class ShareMarket:
 
         print("Your balance is now: ", self.account.balance)
 
+        self.portfolio[chosenStock] = amount
+
         self.save(self.stocksBought)
 
-        self.portfolio[chosenStock] = amount
+        self.portValue()
 
         print('Your portfolio looks like: ', '\n', self.portfolio)
 
@@ -288,12 +290,97 @@ class ShareMarket:
 
     def portValue(self):
 
-        pass
+        self.totalPortfolioValue = 0
+
+        for stock, y in self.portfolio.items():
+
+            stockValue = self.definePortValue(stock)
+
+            self.totalPortfolioValue = stockValue * y
+
+        self.save(self.stocksBought)
+
+        return self.totalPortfolioValue
 
 
     def sellStock(self):
 
-        pass
+        if len(self.stocksBought) is 0:
+
+            print('No Stocks to Sell. Come Back Later')
+
+            time.sleep(2)
+
+            self.startMenu()
+
+        else:
+            pass
+
+        print(self.portfolio, '\n' + 'Welcome to the Sell Stock Menu. Please select a stock to sell...')
+
+        chosenStock = input(str())
+
+        if chosenStock not in self.portfolio:
+
+            print('Not Valid')
+
+            time.sleep(2)
+
+            self.startMenu()
+        else:
+
+            pass
+
+        amount = int(input('Please select amount: '))
+
+        for k, v in self.portfolio.items():
+
+            currentAmount = float(list(self.portfolio.values())[list(self.portfolio.keys()).index(chosenStock)])
+
+            newAmount = currentAmount - amount
+
+        if newAmount < 0:
+
+            print('You don\'t have enough shares')
+
+            time.sleep(2)
+
+            self.startMenu()
+
+        elif newAmount == 0:
+
+            print('You have chosen to sell all your shares!')
+
+            self.portfolio.pop(chosenStock)
+
+            self.stocksBought.remove(chosenStock)
+
+            self.save(self.stocksBought)
+
+            time.sleep(2)
+
+            self.startMenu()
+
+        else:
+
+            pass
+
+        self.portfolio[chosenStock] = newAmount
+
+        print(self.portfolio)
+
+        priceOfStocksSold = self.getPrice(chosenStock=chosenStock) * amount
+
+        self.account.balance = float(self.account.balance) + priceOfStocksSold
+
+        print('You now have ', newAmount, ' shares in ' + chosenStock + '\n\n' + 'Your balance now looks like: ',
+              self.account.balance)
+
+        time.sleep(2)
+
+        self.startMenu()
+
+        self.save(stocksBought)
 
     def checkStock(self):
         chosenStock = str(input("Enter Stock Name: "))
@@ -304,7 +391,7 @@ class ShareMarket:
     def myPortfolioMenu(self):
         chosenOption = int(
             input("Welcome to your Portfolio, choose an option: " +
-                  "1. Check Your Total Value 2. View Stocks Bought \n")
+                  "1. Check Your Total Value 2. View Stocks Bought 3. View Your Portfolio\n")
         )
 
         if chosenOption is 1:
@@ -313,6 +400,14 @@ class ShareMarket:
             print("The stocks you have bought are: ", self.stocksBought)
             time.sleep(2)
             self.startMenu()
+        if chosenOption is 3:
+            print("Your Portfolio: ", self.portfolio)
+            time.sleep(2)
+            self.startMenu()
+
+    def getStockHistory(self):
+
+        pass
 
     def save(self, stocksBought):
         with open('totalPortfolioValue.txt', 'w') as stockFile:
@@ -323,6 +418,18 @@ class ShareMarket:
 
         with open('portfolio.txt', 'w') as portfile:
             portfile.write(str(self.portfolio))
+
+
+    def definePortValue(self, stock):
+        """
+        :param: portfolio
+        :return: list of prices
+        """
+        prices = []
+
+        prices = self.getPrice(chosenStock=stock)
+
+        return prices
 
     def definePrice(self):
         """
@@ -340,13 +447,9 @@ class ShareMarket:
 
     def checkTotalValue(self):
 
-        prices = self.definePrice()
+        self.totalPortfolioValue = self.portValue()
 
-        for stock in self.portfolio:
-
-            self.totalPortfolioVlaue = self.portfolio[str(stock)] * prices[str(stock)]
-
-        print(self.totalPortfolioValue)
+        print(self.portValue())
 
         time.sleep(2)
 
